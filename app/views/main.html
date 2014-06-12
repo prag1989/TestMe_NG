@@ -1,0 +1,36 @@
+<div class="row">
+	<div class="alert alert-danger" ng-show="attempedSubmit && !form.$valid">
+		Language cannot be the only option selected!
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-5 well">
+		<h3>Please Make Your Selection</h3>
+		<form role="form" name="form" novalidate ng-submit="submit(form)">
+			<div class="form-group">
+				<input type="checkbox" ng-model="selectAll" ng-change="toggleSelectAll()">Select All
+			</div>
+			<div class="form-group">
+				<label class="checkbox" ng-repeat="field in fields | orderBy:'value'">
+					<input
+					type="checkbox"
+					name="fields"
+					value="{{field.value}}"
+					ng-change="updateSelectAll()"
+					ng-model="field.checked"
+					ng-required="isFieldTheOnlyOneChecked(fields[3])">
+					<span ng-bind="field.name"></span>
+				</label>
+			</div>
+			<button type="submit" class="btn btn-default">Submit</button>
+		</form>
+	</div>
+	<div class="col-sm-5 col-sm-offset-1 well">
+		<h3>Selection:</h3>
+		<ul>
+			<li ng-repeat="field in fields | orderBy:'value'" ng-if="field.checked">
+				<span ng-bind="field.name"></span>
+			</li>
+		</ul>
+	</div>
+</div>
