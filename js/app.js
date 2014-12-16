@@ -3,11 +3,11 @@ angular.module('TestMe', ['ngTest.cbSelector', 'ngTest.results', 'ngRoute'])
   function($routeProvider) {
     $routeProvider.
     when('/', {
-      templateUrl: '/TestMe_NG-master/testForm.html',
+      templateUrl: '/testForm.html',
       controller: 'CheckBoxController'
     }).
     when('/results', {
-      templateUrl: '/TestMe_NG-master/results.html',
+      templateUrl: '/results.html',
       controller: 'ResultsController'
     }).
     otherwise({
@@ -17,7 +17,7 @@ angular.module('TestMe', ['ngTest.cbSelector', 'ngTest.results', 'ngRoute'])
 ]);
 
 angular.module('ngTest.cbSelector', [])
-.controller('CheckBoxController', ['$scope', '$rootScope', function($scope, $rootScope){
+.controller('CheckBoxController', ['$scope', '$rootScope','$location', function($scope, $rootScope, $location){
 	$scope.cbSelectedByVal = {
 		abstract: false,
 		publication: false,
@@ -27,6 +27,29 @@ angular.module('ngTest.cbSelector', [])
 		priority: false		
 	};
 	$scope.cbSelectAll = false;
+
+	$scope.getKeys = function(Obj,order){
+		return Object.keys(Obj).sort(); //ensures that checkboxes are sorted by name.
+	}
+
+	//checks for the indeterminate condition.
+	var checkIndeterminate = function(selectObject){
+		var keys = $scope.getKeys(selectObject);
+		var counter = 0; max_limit = keys.length, t = true;
+		var elm = document.getElementById('selectAllChkBox');
+		keys.forEach(function(el, i){
+			t = t && selectObject[el];
+			if(selectObject[el]){counter++;}
+		});
+		if(counter<max_limit && counter!==0){
+			if(elm!==null){
+				elm.indeterminate = true;
+			}
+		}
+		else{
+			elm.indeterminate = false;
+		}
+	};
 
 	$scope.testSelectAll = function(){
 		var isAllSelected = true;
@@ -42,6 +65,8 @@ angular.module('ngTest.cbSelector', [])
 		}else{
 			$scope.cbSelectAll = false;
 		}
+		checkIndeterminate($scope.cbSelectedByVal);
+
 	};
 
 	$scope.selectAllCheckBoxes = function(){
@@ -57,7 +82,6 @@ angular.module('ngTest.cbSelector', [])
 	};
 
 	$scope.submit = function(){
-		//debugger;
 		var selectedItems = [];
 		for(var key in $scope.cbSelectedByVal){
 			if($scope.cbSelectedByVal.hasOwnProperty(key)){
@@ -67,22 +91,23 @@ angular.module('ngTest.cbSelector', [])
 			}
 		}
 		if(selectedItems && selectedItems.length==1 && selectedItems.indexOf("language")!= -1){
-			alert('Please select more items!')
-			return false;
+			alert('Please select more items!');
 		}else{
-			console.log('Submitting...')
 			$rootScope.selectedItems = selectedItems;
+			$location.url('/results'); //prevents page change when only language is selected.
 		}
 	};
+
+	
+
 }]);
+
+
 
 angular.module('ngTest.results', [])
 .controller('ResultsController', ['$scope', '$rootScope', function($scope, $rootScope){
-	console.log('Results');
 	$scope.results = [];
-	//debugger;
 	if($rootScope.selectedItems){
-		//debugger;
 		$scope.results = $rootScope.selectedItems;
 	}
 }]);

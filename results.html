@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>TestMe_lite results!</title>
-	<link rel="stylesheet" href="css/bootstrap.css"/>
-	<!--[if IE 7]>
+<!--[if IE 7]>
 	<script>
 		// Attach additional stylesheets and JS for ie.
 		//TODO: json3 not working??
@@ -16,23 +10,16 @@
 		json3.appendChild(document.getElementsByTagName('head')[0]);
 	</script>
 	<![endif]-->
-	<!-- <script src="js/vendor/jquery.min.js"></script>
-	<script src="js/vendor/bootstrap.js"></script> -->
- 	<!-- <script src="js/vendor/angular.min.js"></script>
-	<script src="js/vendor/angular-route.min.js"></script> -->
-	<script src="js/app.js"></script>
 
-</head>
-<body ng-controller="ResultsController">
-<div class="container">
-	<div class="row">
-		<h1>You made it to the results page!</h1>
-	</div>
-	<div class="well">
-		<p>Selected Items:</p>
-		<ul>			
-			<li ng-repeat="item in results">{{item}}</li>
-		</ul>
-	</div>
-</body>
-</html>
+<div class="container" ng-controller="ResultsController">
+    <div class="row">
+        <h1>You made it to the results page!</h1>
+    </div>
+    <div class="well">
+        <p>Selected Items:</p>
+        <ul>
+            <li ng-repeat="item in results">{{item}}</li>
+        </ul>
+        <a href="index.html">Return to Form</a>
+    </div>
+</div>
